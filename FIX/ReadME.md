@@ -22,3 +22,5 @@
 //===----------------------------------------------------------------------===//
  
 Download the original LLVM LLDB and replace the file <Path with all LLVM sources>/lldb/source/Host/windows/MainLoopWindows.cpp with the one located in this folder.
+
+Photos as evidence:
