@@ -1,0 +1,400 @@
+All content written below belongs to DinoMax0n and is licensed under GPL-3.0
+
+I am new to describing actions, so if you are too, I don't recommend gathering it yourself. It's better to download from the official repo https://github.com/DinoMax0n/WinClang. If you encounter any errors, write to me at dinomax0n@gmail.com.
+
+Prerequisites:
+
+Windows10/11 
+MSYS2-UCRT64
+MSYS2-Cmake
+MSYS2-ninja
+MSYS2-make
+MSYS2-clang (You can use GCC)
+MSYS2-lld (I do not recommend using ld)
+MSYS2-Python (Time dependence)
+
+EXECUTE THE COMMANDS EXACTLY IN THE SEQUENCE IN WHICH THEY ARE WRITTEN!
+Then execute all commands in MSYS2-UCRT64 WITH ADMIN rights
+
+cd ~
+
+git clone https://git.code.sf.net/p/mingw-w64/mingw-w64
+
+cd mingw-w64
+
+mkdir build-headrs
+
+cd build-headrs
+
+../mingw-w64-headers/configure \
+  --host=x86_64-w64-mingw32 \
+  --prefix=/ \
+  --enable-sdk=all \
+  --enable-idl \
+  --enable-secure-api \
+  --with-default-win32-winnt=0x0A00 \
+  --with-default-msvcrt=ucrt
+
+make install DESTDIR="/c/PROGRA~2/LLVM/x86_64-w64-mingw32"
+
+cd ../..
+
+Download LLVM version 21.1.X https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.8/llvm-project-21.1.8.src.tar.xz (Tested 21.1.8 and 21.1.5)
+
+mkdir build
+
+cd build
+
+mkdir run
+
+(If you need test in last flag change -DLLVM_INCLUDE_TESTS=OFF -> -DLLVM_INCLUDE_TESTS=ON)
+cmake -G Ninja ../../runtimes \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX="/c/PROGRA~2/LLVM" \
+  -DCMAKE_C_FLAGS="-target x86_64-w64-windows-gnu" \
+  -DCMAKE_CXX_FLAGS="-D_LIBCPP_HAS_MSVCRT=1 -DLIBCXX_HAS_WIN32_THREAD_API=1 -target x86_64-w64-windows-gnu" \
+  -DCMAKE_C_COMPILER="clang.exe" \
+  -DCMAKE_CXX_COMPILER="clang++.exe" \
+  -DCMAKE_ASM_COMPILER="clang.exe" \
+  -DCMAKE_C_COMPILER_TARGET=x86_64-w64-windows-gnu \
+  -DCMAKE_CXX_COMPILER_TARGET=x86_64-w64-windows-gnu \
+  -DCMAKE_ASM_COMPILER_TARGET=x86_64-w64-windows-gnu \
+  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind;compiler-rt" \
+  -DLIBCXX_HAS_MUSL_LIBC=OFF \
+  -DLIBCXX_ENABLE_STATIC=ON \
+  -DLIBCXX_ENABLE_SHARED=OFF \
+  -DLIBCXX_HERMETIC_STATIC_LIBRARY=ON \
+  -DLIBCXX_STATICALLY_LINK_ABI_INTO_LIBCXX=ON \
+  -DLIBCXX_HAS_WIN32_THREAD_API=ON \
+  -DLIBCXX_HAS_PTHREAD_API=OFF \
+  -DLIBCXX_HAS_EXTERNAL_THREAD_API=OFF \
+  -DLIBCXX_ENABLE_MONOTONIC_CLOCK=ON \
+  -DLIBCXX_ENABLE_FILESYSTEM=ON \
+  -DLIBCXX_USE_WIN32_FILESYSTEM=ON \
+  -DLIBCXXABI_ENABLE_STATIC=ON \
+  -DLIBCXXABI_ENABLE_SHARED=OFF \
+  -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
+  -DLIBUNWIND_ENABLE_STATIC=ON \
+  -DLIBUNWIND_ENABLE_SHARED=OFF \
+  -DLIBUNWIND_USE_COMPILER_RT=ON \
+  -DCOMPILER_RT_BUILD_BUILTINS=ON \
+  -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
+  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
+  -DLLVM_INCLUDE_TESTS=OFF
+
+ninja 
+
+ninja install (If an error occurs, check your administrator rights or change the Install prefix)
+
+cd ..
+
+mkdir prod 
+
+cd prod
+
+  (Command without LLDB)
+ cmake -G Ninja ../../llvm \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX="C:/Program Files (x86)/LLVM" \
+  -DCMAKE_C_COMPILER_TARGET=x86_64-w64-windows-gnu \
+  -DCMAKE_CXX_COMPILER_TARGET=x86_64-w64-windows-gnu \
+  -DCMAKE_ASM_COMPILER_TARGET=x86_64-w64-windows-gnu \
+  -DBUILD_SHARED_LIBS=OFF \
+  -DCMAKE_C_COMPILER=clang \
+  -DCMAKE_CXX_COMPILER=clang++ \
+  -DCMAKE_ASM_COMPILER=clang \
+  -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;lld" \
+  -DLLVM_TARGETS_TO_BUILD="X86" \
+  -DLLVM_ENABLE_LLD=ON \
+  -DLLVM_ENABLE_LTO=OFF \
+  -DCMAKE_EXE_LINKER_FLAGS="-static" \
+  -DCMAKE_SHARED_LINKER_FLAGS="-static" \
+  -DLLVM_INCLUDE_TESTS=OFF \
+  -DLLVM_INCLUDE_EXAMPLES=OFF \
+  -DLLVM_INCLUDE_BENCHMARKS=OFF \
+  -DLLVM_INCLUDE_DOCS=OFF \
+  -DLLVM_ENABLE_THREADS=ON \
+  -DLLVM_BUILD_LLVM_DYLIB=OFF \
+  -DLLVM_LINK_LLVM_DYLIB=OFF \
+  -DLLVM_ENABLE_ZLIB=OFF \
+  -DLLVM_ENABLE_LIBXML2=OFF \
+  -DLLDB_ENABLE_LIBXML2=OFF \
+  -DLLDB_ENABLE_LIBEDIT=OFF \
+  -DLLVM_STATIC_LINK_CXX_STDLIB=ON \
+  -DLLVM_ENABLE_ZSTD=ON \
+  -DLLVM_USE_STATIC_ZSTD=ON \
+  -DLLDB_ENABLE_CURSES=OFF \
+  -DLLDB_ENABLE_LZMA=OFF \
+  -DLLDB_ENABLE_ZLIB=OFF \
+  -DLLDB_ENABLE_ICONV=OFF 
+
+ninja
+
+ninja install
+
+cd ../../..
+
+cd mingw-w64
+
+mkdir build-crt
+
+cd build-crt
+
+(The command can freeze for a couple of minutes even on powerful hardware)
+../mingw-w64-crt/configure \
+    --host=x86_64-w64-mingw32 \
+    --with-default-msvcrt=ucrt \
+    --disable-lib32 \
+    --prefix=/ \
+    CC="C:/PROGRA~2/LLVM/bin/clang.exe" \
+    CXX="C:/PROGRA~2/LLVM/bin/clang++.exe" \
+    CFLAGS="-target x86_64-w64-mingw32 -m64 -Wno-typedef-redefinition" \
+    CXXFLAGS="-target x86_64-w64-mingw32 -m64 -Wno-typedef-redefinition" \
+    --with-sysroot=/c/PROGRA~2/LLVM/x86_64-w64-mingw32
+
+make
+
+make install DESTDIR="/c/PROGRA~2/LLVM/x86_64-w64-mingw32"
+
+mkdir C:/PROGRA~2/LLVM/lib/clang/21/lib/x86_64-w64-windows-gnu
+
+cp -r C:/PROGRA~2/LLVM/lib/windows/*  C:/PROGRA~2/LLVM/lib/clang/21/lib/x86_64-w64-windows-gnu
+
+mv C:/PROGRA~2/LLVM/lib/clang/21/lib/x86_64-w64-windows-gnu/libclang_rt.builtins-x86_64.a C:/PROGRA~2/LLVM/lib/clang/21/lib/x86_64-w64-windows-gnu/libclang_rt.builtins.a
+
+Stage 1 is ready, if you don’t need more, use
+
+If you want to use LLDB 
+
+go to https://github.com/DinoMax0n/WinClang/tree/main/FIX and do what is written there in the ReadME
+
+(Config with LLDB)
+cmake -G Ninja ../../llvm \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX="C:/Program Files (x86)/LLVM" \
+  -DCMAKE_C_COMPILER_TARGET=x86_64-w64-windows-gnu \
+  -DCMAKE_CXX_COMPILER_TARGET=x86_64-w64-windows-gnu \
+  -DCMAKE_ASM_COMPILER_TARGET=x86_64-w64-windows-gnu \
+  -DBUILD_SHARED_LIBS=OFF \
+  -DCMAKE_C_COMPILER=clang \
+  -DCMAKE_CXX_COMPILER=clang++ \
+  -DCMAKE_ASM_COMPILER=clang \
+  -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;lld;lldb" \
+  -DLLVM_TARGETS_TO_BUILD="X86" \
+  -DLLVM_ENABLE_LLD=ON \
+  -DLLVM_ENABLE_LTO=OFF \
+  -DCMAKE_EXE_LINKER_FLAGS="-static" \
+  -DCMAKE_SHARED_LINKER_FLAGS="-static" \
+  -DLLVM_INCLUDE_TESTS=OFF \
+  -DLLVM_INCLUDE_EXAMPLES=OFF \
+  -DLLVM_INCLUDE_BENCHMARKS=OFF \
+  -DLLVM_INCLUDE_DOCS=OFF \
+  -DLLVM_ENABLE_THREADS=ON \
+  -DLLVM_BUILD_LLVM_DYLIB=OFF \
+  -DLLVM_LINK_LLVM_DYLIB=OFF \
+  -DLLVM_ENABLE_ZLIB=OFF \
+  -DLLVM_ENABLE_LIBXML2=OFF \
+  -DLLDB_ENABLE_LIBXML2=OFF \
+  -DLLDB_ENABLE_LIBEDIT=OFF \
+  -DLLVM_STATIC_LINK_CXX_STDLIB=ON \
+  -DLLVM_ENABLE_ZSTD=ON \
+  -DLLVM_USE_STATIC_ZSTD=ON \
+  -DLLDB_ENABLE_CURSES=OFF \
+  -DLLDB_ENABLE_LZMA=OFF \
+  -DLLDB_ENABLE_ZLIB=OFF \
+  -DLLDB_ENABLE_ICONV=OFF
+
+Stage 1 Ready to use
+
+RUN THE FOLLOWING COMMANDS IN PowerShell ONLY
+
+cd ~
+
+git clone --depth 1 --branch v1.5.6 https://github.com/facebook/zstd.git
+
+cd zstd
+
+mkdir buil
+
+cd buil
+
+cmake -G Ninja ../build/cmake `
+  -DCMAKE_BUILD_TYPE=Release `
+  -DCMAKE_INSTALL_PREFIX="C:/PROGRA~2/LLVM" `
+  -DCMAKE_C_FLAGS="-target x86_64-w64-windows-gnu" `
+  -DCMAKE_CXX_FLAGS="-target x86_64-w64-windows-gnu" `
+  -DZSTD_BUILD_STATIC=ON `
+  -DZSTD_BUILD_SHARED=OFF `
+  -DZSTD_BUILD_PROGRAMS=OFF `
+  -DZSTD_BUILD_TESTS=OFF
+
+ninja
+
+ninja install
+
+cd ~
+
+git clone --depth 1 https://github.com/win-iconv/win-iconv.git
+
+cd win-iconv
+
+mkdir build
+
+cd build
+
+cmake -G Ninja .. `
+  -DCMAKE_BUILD_TYPE=Release `
+  -DCMAKE_INSTALL_PREFIX="C:/PROGRA~2/LLVM" `
+  -DCMAKE_C_COMPILER=clang `
+  -DCMAKE_C_FLAGS="-target x86_64-w64-windows-gnu" `
+  -DBUILD_SHARED_LIBS=OFF `
+  -DBUILD_EXECUTABLE=OFF
+  
+
+ninja
+
+ninja install
+
+cd ~
+
+git clone --depth 1 --branch v2.12.6 https://gitlab.gnome.org/GNOME/libxml2.git
+
+cd libxml2
+
+mkdir build
+
+cd build
+
+cmake -G Ninja .. `
+  -DCMAKE_BUILD_TYPE=Release `
+  -DCMAKE_INSTALL_PREFIX="C:/PROGRA~2/LLVM" `
+  -DCMAKE_C_COMPILER=clang `
+  -DCMAKE_RC_COMPILER=llvm-rc `
+  -DCMAKE_C_FLAGS="-target x86_64-w64-windows-gnu" `
+  -DLIBXML2_WITH_PYTHON=OFF `
+  -DLIBXML2_WITH_LZMA=OFF `
+  -DLIBXML2_WITH_ZLIB=OFF `
+  -DLIBXML2_WITH_ICONV=ON `
+  -DLIBXML2_WITH_TESTS=OFF `
+  -DLIBXML2_WITH_PROGRAMS=OFF `
+  -DBUILD_SHARED_LIBS=OFF
+
+cd <souce LLVM>
+
+cd build/run
+
+rm -rf *
+
+cmake -G Ninja ../../runtimes `
+  -DCMAKE_BUILD_TYPE=Release `
+  -DCMAKE_INSTALL_PREFIX="C:/PROGRA~2/LLVM" `
+  -DCMAKE_C_COMPILER="clang.exe" `
+  -DCMAKE_CXX_COMPILER="clang++.exe" `
+  -DCMAKE_ASM_COMPILER="clang.exe" `
+  -DCMAKE_C_FLAGS="-target x86_64-w64-windows-gnu" `
+  -DCMAKE_CXX_FLAGS="-target x86_64-w64-windows-gnu -D_LIBCPP_HAS_MSVCRT=1 -DLIBCXX_HAS_WIN32_THREAD_API=1" `
+  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind;compiler-rt" `
+  -DCMAKE_C_COMPILER_TARGET=x86_64-w64-windows-gnu `
+  -DCMAKE_CXX_COMPILER_TARGET=x86_64-w64-windows-gnu `
+  -DCMAKE_ASM_COMPILER_TARGET=x86_64-w64-windows-gnu `
+  -DLIBCXX_ENABLE_STATIC=ON `
+  -DLIBCXX_ENABLE_SHARED=OFF `
+  -DLIBCXX_HERMETIC_STATIC_LIBRARY=ON `
+  -DLIBCXX_STATICALLY_LINK_ABI_INTO_LIBCXX=ON `
+  -DLIBCXX_HAS_WIN32_THREAD_API=ON `
+  -DLIBCXX_HAS_PTHREAD_API=OFF `
+  -DLIBCXX_ENABLE_MONOTONIC_CLOCK=ON `
+  -DLIBCXX_ENABLE_FILESYSTEM=ON `
+  -DLIBCXX_USE_WIN32_FILESYSTEM=ON `
+  -DLIBCXXABI_ENABLE_STATIC=ON `
+  -DLIBCXXABI_ENABLE_SHARED=OFF `
+  -DLIBCXXABI_USE_LLVM_UNWINDER=ON `
+  -DLIBUNWIND_ENABLE_STATIC=ON `
+  -DLIBUNWIND_ENABLE_SHARED=OFF `
+  -DLIBUNWIND_USE_COMPILER_RT=ON `
+  -DCOMPILER_RT_BUILD_BUILTINS=ON `
+  -DCOMPILER_RT_BUILD_SANITIZERS=OFF `
+  -DLLVM_INCLUDE_TESTS=OFF `
+  -DLIBCXX_ENABLE_ASSERTIONS=OFF
+
+ninja 
+
+cd ../prod
+
+rm -rf *
+
+(Attention! If you haven't built LLDB, remove LLDB from -DLLVM_ENABLE_PROJECTS=, it should be -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;lld")
+cmake -G Ninja ../../llvm `
+  -DCMAKE_BUILD_TYPE=Release `
+  -DCMAKE_INSTALL_PREFIX="C:/PROGRA~2/LLVM" `
+  -DCMAKE_C_COMPILER="clang" `
+  -DCMAKE_CXX_COMPILER="clang++" `
+  -DLLVM_USE_LINKER=lld `
+  -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;lld;lldb" `
+  -DLLVM_TARGETS_TO_BUILD="X86" `
+  -DLLDB_ENABLE_PYTHON=OFF `
+  -DLLVM_ENABLE_ZSTD=ON `
+  -DZSTD_INCLUDE_DIR="C:/PROGRA~2/LLVM/include" `
+  -DZSTD_LIBRARY="C:/PROGRA~2/LLVM/lib/libzstd.a" `
+  -DLLVM_USE_STATIC_ZSTD=ON `
+  -DLLDB_ENABLE_ICONV=ON `
+  -DICONV_INCLUDE_DIR="C:/PROGRA~2/LLVM/include" `
+  -DICONV_LIBRARY="C:/PROGRA~2/LLVM/lib/libiconv.a" `
+  -DLLDB_ENABLE_LIBXML2=ON `
+  -DLIBXML2_INCLUDE_DIR="C:/PROGRA~2/LLVM/include/libxml2" `
+  -DLIBXML2_LIBRARY="C:/PROGRA~2/LLVM/lib/libxml2.a" `
+  -DLLVM_ENABLE_ZLIB=OFF `
+  -DLLVM_INCLUDE_TESTS=OFF `
+  -DLLVM_STATIC_LINK_CXX_STDLIB=ON `
+  -DCLANG_DEFAULT_RTLIB="compiler-rt" `
+  -DCLANG_DEFAULT_CXX_STDLIB="libc++" `
+  -DCMAKE_C_FLAGS="-target x86_64-w64-windows-gnu -DLIBXML_STATIC -DLIBICONV_STATIC" `
+  -DCMAKE_CXX_FLAGS="-target x86_64-w64-windows-gnu -DLIBXML_STATIC -DLIBICONV_STATIC" `
+  -DCMAKE_EXE_LINKER_FLAGS="-static -lbcrypt -liconv" `
+  -DCMAKE_SHARED_LINKER_FLAGS="-static -lbcrypt -liconv"
+
+ninja
+
+rm -rf "C:/PROGRA~2/LLVM"
+
+ninja install
+
+cd ../run
+
+ninja install
+
+cd <source to mingw-64w>
+
+cd build-headrs
+
+rm -rf *
+
+../mingw-w64-headers/configure \
+  --host=x86_64-w64-mingw32 \
+  --prefix=/ \
+  --enable-sdk=all \
+  --enable-idl \
+  --enable-secure-api \
+  --with-default-win32-winnt=0x0A00 \
+  --with-default-msvcrt=ucrt
+
+make install DESTDIR="/c/PROGRA~2/LLVM/x86_64-w64-mingw32"
+
+cd ../build-headrs
+
+rm -rf *
+
+../mingw-w64-crt/configure \
+    --host=x86_64-w64-mingw32 \
+    --with-default-msvcrt=ucrt \
+    --disable-lib32 \
+    --prefix=/ \
+    CC="C:/PROGRA~2/LLVM/bin/clang.exe" \
+    CXX="C:/PROGRA~2/LLVM/bin/clang++.exe" \
+    CFLAGS="-target x86_64-w64-mingw32 -m64 -Wno-typedef-redefinition" \
+    CXXFLAGS="-target x86_64-w64-mingw32 -m64 -Wno-typedef-redefinition" \
+    --with-sysroot=/c/PROGRA~2/LLVM/x86_64-w64-mingw32
+
+make
+
+make install DESTDIR="/c/PROGRA~2/LLVM/x86_64-w64-mingw32"
