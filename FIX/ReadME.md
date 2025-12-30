@@ -45,6 +45,25 @@
 Download the original LLVM LLDB and replace the file <Path with all LLVM sources>/lldb/source/Host/windows/MainLoopWindows.cpp with the one located in this folder.
 
 ## Photos as evidence:
-### MSYS2 - <img width="1045" height="367" alt="image" src="https://github.com/user-attachments/assets/0aa2a3d0-a5ee-4646-ac57-471a1bf85ae0" />
-### Nativ Windows (PowerShell) - <img width="700" height="418" alt="image" src="https://github.com/user-attachments/assets/1a646c99-6ea8-4b31-9330-9ecb4c74bf71" />
+### MSYS2 ninja check-lldb  
+
+<img width="391" height="213" alt="image" src="https://github.com/user-attachments/assets/6166d296-17ac-473b-a656-dbd0d45ca5fe" />
+
+### MSY2 ninja check-all
+
+
+<img width="408" height="216" alt="image" src="https://github.com/user-attachments/assets/983ede4f-6f73-400c-98fd-12468e254cf2" />
+
+### PowerShell ninja check-lldb
+
+
+<img width="435" height="248" alt="image" src="https://github.com/user-attachments/assets/cb346514-179d-48dd-80b8-2fea97d5785c" />
+
+### PowerShell ninja check-all
+
+
+<img width="409" height="258" alt="image" src="https://github.com/user-attachments/assets/edc1b54c-0381-492e-a774-998ef3b5f300" />
+
+ 
+
 
