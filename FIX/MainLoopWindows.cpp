@@ -24,7 +24,7 @@
 #include <winbase.h>
 #include <winerror.h>
 #include <winsock2.h>
-#include <mutex> // Добавлено для безопасности
+#include <mutex> // Added for safety
 
 using namespace lldb;
 using namespace lldb_private;
@@ -55,11 +55,12 @@ public:
   ~PipeEvent() override {
     if (m_monitor_thread.joinable()) {		
       {
-        std::lock_guard<std::mutex> guard(m_mutex);
+        std::lock_guard<std::mutex> Guard(m_mutex); // Ensure atomicity when signaling thread shutdown
         m_stopped = true;
         SetEvent(m_ready);
       }
 
+      ///Added fix from LLVM22
       // FIX: On MinGW native_handle() returns pthread_t (integer)
       // which is not a HANDLE for WinAPI.
 #if defined(_WIN32) && !defined(__MINGW32__)
