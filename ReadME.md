@@ -5,7 +5,7 @@ A standalone LLVM-based toolchain for Windows, built for developers who value po
 ## ⚖️ Licensing
 
 * **Build Scripts:** Licensed under **GPL-3.0**.
-* **Fixes & Patches:** Original LLVM code is Apache 2.0. My modifications in the `FIX` folder are licensed under **MIT** (see `FIX/README.md` for details).
+* **Source code** Original LLVM code is Apache 2.0.
 
 ---
 
