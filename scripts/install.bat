@@ -6,7 +6,6 @@
 setlocal
 title WinClang Installer
 
-:: Admin rights check
 net session >nul 2>&1
 if %errorLevel% neq 0 (
     echo [ERROR] Please run this script as Administrator!
@@ -18,18 +17,15 @@ echo ========================================
 echo Adding WinClang to System PATH...
 echo ========================================
 
-:: Get path to the bin folder relative to the script
 set "BIN_PATH=%~dp0bin"
 
-:: Update System PATH (for all users)
-setx /M PATH "%BIN_PATH%;%PATH%"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$targetPath='%BIN_PATH%'; $oldPath=[Environment]::GetEnvironmentVariable('Path', 'Machine'); if ($oldPath.Split(';') -notcontains $targetPath) { [Environment]::SetEnvironmentVariable('Path', $oldPath + ';' + $targetPath, 'Machine'); write-host '[SUCCESS] LLVM added to PATH.' } else { write-host '[INFO] LLVM path already exists in PATH.' }"
 
 if %errorLevel% equ 0 (
     echo.
-    echo [SUCCESS] Done! LLVM has been added to PATH.
-    echo.
-    echo Please restart your terminal/IDE to apply changes.
+    echo Done! Please restart your terminal/IDE to apply changes.
 ) else (
+    echo.
     echo [ERROR] Something went wrong while updating PATH.
 )
 
