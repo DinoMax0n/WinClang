@@ -19,7 +19,7 @@ Python (I recommend 3.14)
 
 EXECUTE THE COMMANDS EXACTLY IN THE SEQUENCE IN WHICH THEY ARE WRITTEN!
 
-(Tested 22.1.0,22.1.1,22.1.2)
+(Tested 22.1.0,22.1.1,22.1.2,22.1.3)
 
 RUN THE FOLLOWING COMMANDS IN PowerShell ONLY(or change the installation prefix)
 
@@ -63,7 +63,7 @@ cmake -G Ninja .. `
   -DLIBXML2_WITH_PROGRAMS=OFF `
   -DBUILD_SHARED_LIBS=OFF
   
-  Download LLVM version 22.1.X https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.2/llvm-project-22.1.2.src.tar.xz 
+  Download LLVM version 22.1.X https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.3/llvm-project-22.1.3.src.tar.xz 
   
   cd <LLVM SOURCE>
   
