@@ -1,1 +1,1 @@
-Bugs are not detected in LLVM22.1.5 (Unlikely to be broken in future minor versions) during build, **no** fix is required!
+Bugs are not detected in LLVM22.1.6 (Unlikely to be broken in future minor versions) during build, **no** fix is required!
