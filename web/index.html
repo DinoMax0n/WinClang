@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WinClang</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --bg:       #0a0a0a;
+        --border:   #242424;
+        --text:     #e5e5e5;
+        --muted:    #8a8a8a;
+        --accent:   #d96f1f;
+        --accent-h: #f08a35;
+        --hover-bg: #1a1a1a;
+        --tooltip-bg: #141414;
+    }
+
+    ::selection { background: var(--accent); color: #000; }
+
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 24px;
+    }
+
+    .inner { 
+        max-width: 900px; 
+        width: 100%; 
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+        font-size: 2.6rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .subtitle { 
+        color: var(--muted); 
+        margin-bottom: 44px; 
+        text-align: center;
+    }
+
+    .rule { 
+        border: 0; 
+        border-top: 1px solid var(--border); 
+        margin-bottom: 44px; 
+    }
+
+    .table-top-bar {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 16px;
+    }
+
+    .install-guide-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .install-guide-btn {
+        background: transparent;
+        border: 1px solid var(--accent);
+        color: var(--accent-h);
+        padding: 7px 18px;
+        font-size: 0.85rem;
+        font-family: inherit;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: color 0.2s ease, border-color 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .install-guide-btn:hover {
+        color: var(--muted);
+        border-color: var(--border);
+    }
+
+    .install-guide-btn svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .install-guide-tooltip {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background: var(--tooltip-bg);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 14px 18px;
+        font-size: 0.85rem;
+        line-height: 1.55;
+        width: 380px;
+        max-width: 90vw;
+        border-radius: 3px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-4px);
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+        pointer-events: none;
+        z-index: 10;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .install-guide-tooltip::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 20px;
+        border: 6px solid transparent;
+        border-bottom-color: var(--border);
+    }
+
+    .install-guide-tooltip::after {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 21px;
+        border: 5px solid transparent;
+        border-bottom-color: var(--tooltip-bg);
+    }
+
+    .install-guide-tooltip strong {
+        color: var(--accent-h);
+        font-weight: 600;
+    }
+
+    .install-guide-tooltip code {
+        background: rgba(217, 111, 31, 0.1);
+        color: var(--accent-h);
+        padding: 1px 6px;
+        border-radius: 2px;
+        font-family: "SF Mono", Monaco, "Cascadia Mono", monospace;
+        font-size: 0.82rem;
+    }
+
+    .install-guide-wrapper:hover .install-guide-tooltip,
+    .install-guide-wrapper:focus-within .install-guide-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        margin-bottom: 44px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    thead {
+        background: #0f0f0f;
+        border-bottom: 1px solid var(--border);
+    }
+
+    th {
+        padding: 12px 16px;
+        text-align: left;
+        font-weight: 500;
+        color: var(--muted);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid var(--border);
+        transition: background-color 0.2s ease;
+    }
+
+    tbody tr:hover {
+        background: var(--hover-bg);
+    }
+
+    td {
+        padding: 16px;
+        vertical-align: middle;
+    }
+
+    .version {
+        font-weight: 600;
+        font-family: "SF Mono", Monaco, "Cascadia Mono", monospace;
+    }
+
+    .components {
+        color: var(--muted);
+        font-size: 0.85rem;
+    }
+
+    .component-tag {
+        display: inline-block;
+        background: rgba(217, 111, 31, 0.1);
+        color: var(--accent-h);
+        padding: 2px 8px;
+        border-radius: 3px;
+        margin: 2px 4px 2px 0;
+        font-size: 0.8rem;
+    }
+
+    .sha {
+        font-family: "SF Mono", Monaco, "Cascadia Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--muted);
+        word-break: break-all;
+    }
+
+    .sha-copyable {
+        cursor: pointer;
+        transition: color 0.2s ease;
+        user-select: all;
+    }
+    .sha-copyable:hover {
+        color: var(--accent-h);
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 8px 20px;
+        border: 1px solid var(--accent);
+        border-radius: 2px;
+        color: var(--accent-h);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .btn:hover { 
+        background: var(--accent); 
+        color: #0a0a0a; 
+        transform: translateY(-1px);
+    }
+
+    .btn-download {
+        cursor: pointer;
+        background: transparent !important;
+        color: var(--accent-h) !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    
+    .btn-download:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(217, 111, 31, 0.25);
+        border-color: var(--accent-h);
+    }
+    
+    .btn-download:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(217, 111, 31, 0.15);
+    }
+
+    .loading {
+        text-align: center;
+        color: var(--muted);
+        padding: 40px;
+    }
+
+    .error {
+        text-align: center;
+        color: #ff6b6b;
+        padding: 40px;
+        background: rgba(255, 107, 107, 0.1);
+        border: 1px solid #ff6b6b;
+        border-radius: 4px;
+    }
+
+    footer {
+        padding: 28px 24px 36px;
+        text-align: center;
+        color: var(--muted);
+        animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+    footer a {
+        color: var(--muted);
+        text-decoration: none;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 2px;
+        font-size: 1.05rem;
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    footer a:hover { 
+        color: var(--accent-h); 
+        border-color: var(--accent); 
+    }
+    .copy  { 
+        margin-top: 8px; 
+        font-size: 0.82rem;
+    }
+    .quote { 
+        margin-top: 4px; 
+        font-style: italic; 
+        opacity: .8; 
+        font-size: 0.82rem;
+    }
+
+    @media (max-width: 768px) {
+        h1 { font-size: 2.1rem; }
+        th, td { padding: 12px 8px; }
+        .sha { font-size: 0.7rem; }
+    }
+
+    @media (max-width: 480px) {
+        .install-guide-tooltip {
+            width: calc(100vw - 48px);
+            left: 0;
+        }
+    }
+</style>
+</head>
+<body>
+
+<main>
+    <div class="inner">
+        <h1>WinClang</h1>
+        <p class="subtitle">Built on Native Windows with Universal C Runtime</p>
+        <hr class="rule">
+        <div class="table-top-bar">
+            <div class="install-guide-wrapper" tabindex="0">
+                <button class="install-guide-btn" type="button" aria-describedby="install-tooltip">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    Install Guide
+                </button>
+                <div class="install-guide-tooltip" id="install-tooltip" role="tooltip">
+                    Unzip and move it to the permanent llvm directory and run <code>install.bat</code> (if you move llvm after this, it will lose its path; you will have to re-run <code>install.bat</code> and manually clear the path from the obsolete entry, since no script can know where llvm was before)
+                </div>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <table id="versions-table">
+                <thead>
+                    <tr>
+                        <th>Version</th>
+                        <th>Components</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                        <th>SHA-256 Checksum</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <tr>
+                        <td colspan="5" class="loading">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <a href="https://github.com/DinoMax0n/WinClang" target="_blank" rel="noopener noreferrer">Github</a>
+    <p class="copy">DinoMax0n © 2025</p>
+    <p class="quote">Made for those who love freedom and convenience on Windows</p>
+</footer>
+
+<script>
+(function() {
+    'use strict';
+    const tableBody = document.getElementById('table-body');
+
+    function copyToClipboard(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text);
+        } else {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textArea);
+                return successful ? Promise.resolve() : Promise.reject(new Error('execCommand failed'));
+            } catch (err) {
+                document.body.removeChild(textArea);
+                return Promise.reject(err);
+            }
+        }
+    }
+
+    function renderTable(data) {
+        if (!Array.isArray(data)) {
+            showError('Invalid data format.');
+            return;
+        }
+        if (data.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5" class="loading">No versions available</td></tr>';
+            return;
+        }
+        tableBody.innerHTML = '';
+        data.forEach(function(version) {
+            const row = document.createElement('tr');
+            
+            const tdVersion = document.createElement('td');
+            tdVersion.className = 'version';
+            tdVersion.textContent = version.version || 'N/A';
+            row.appendChild(tdVersion);
+
+            const tdComponents = document.createElement('td');
+            tdComponents.className = 'components';
+            if (version.components && Array.isArray(version.components)) {
+                version.components.forEach(function(comp) {
+                    const tag = document.createElement('span');
+                    tag.className = 'component-tag';
+                    tag.textContent = comp;
+                    tdComponents.appendChild(tag);
+                });
+            } else {
+                tdComponents.textContent = 'N/A';
+            }
+            row.appendChild(tdComponents);
+
+            const tdDate = document.createElement('td');
+            tdDate.textContent = version.date || 'N/A';
+            row.appendChild(tdDate);
+
+            const tdAction = document.createElement('td');
+            if (version.url) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn btn-download';
+                btn.textContent = 'Download';
+                
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const link = document.createElement('a');
+                    link.href = version.url;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    link.download = ''; 
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+                tdAction.appendChild(btn);
+            } else {
+                tdAction.textContent = 'N/A';
+            }
+            row.appendChild(tdAction);
+
+            const tdSha = document.createElement('td');
+            tdSha.className = 'sha sha-copyable';
+            tdSha.title = 'Click to copy SHA-256';
+            const shaValue = version.sha || version.sha256 || 'N/A';
+            tdSha.textContent = shaValue;
+            
+            if (shaValue !== 'N/A') {
+                tdSha.addEventListener('click', function() {
+                    copyToClipboard(shaValue).then(function() {
+                        const originalText = tdSha.textContent;
+                        tdSha.textContent = 'Copied!';
+                        tdSha.style.color = 'var(--accent-h)';
+                        setTimeout(function() {
+                            tdSha.textContent = originalText;
+                            tdSha.style.color = '';
+                        }, 1200);
+                    }).catch(function(err) {
+                        console.error('Copy failed:', err);
+                        tdSha.textContent = 'Copy failed';
+                        setTimeout(function() {
+                            tdSha.textContent = shaValue;
+                        }, 1200);
+                    });
+                });
+            }
+            row.appendChild(tdSha);
+            tableBody.appendChild(row);
+        });
+    }
+
+    function showError(message) {
+        tableBody.innerHTML = '<tr><td colspan="5" class="error">' + message + '</td></tr>';
+    }
+
+    function loadVersions() {
+        fetch('./table.json')
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status);
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                renderTable(data);
+            })
+            .catch(function(error) {
+                showError('Failed to load versions. Check table.json.');
+                console.error('Load error:', error);
+            });
+    }
+
+    loadVersions();
+})();
+</script>
+
+</body>
+</html>

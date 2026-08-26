@@ -1,0 +1,65 @@
+[
+   {
+    "version": "22.1.8",
+    "components": ["clang", "lld", "clang-extra-tools", "lldb", "libc++", "compiler-rt", "libunwind", "ASan", "UbSan", "python.dll"],
+    "date": "2026-06-18",
+    "url": "https://github.com/DinoMax0n/WinClang/releases/download/22.1.8/LLVM22.1.8.zip",
+    "sha": "828046D08955220794BB3D185057E2FB29349A48F0EEDE5219849B218C5FE036"
+   }, 
+  {
+    "version": "22.1.6",
+    "components": ["clang", "lld", "clang-extra-tools", "lldb", "libc++", "compiler-rt", "libunwind", "ASan", "UbSan", "python.dll"],
+    "date": "2026-05-20",
+    "url": "https://github.com/DinoMax0n/WinClang/releases/download/22.1.6/LLVM22.1.6.zip",
+    "sha": "2edde380c488ca31cb1da0d8d299f2790aa8f6467a26c46e969263456f4b4aa2"
+  }, 
+  {
+    "version": "22.1.5",
+    "components": ["clang", "lld", "clang-extra-tools", "lldb", "libc++", "compiler-rt", "libunwind", "ASan", "UbSan", "python.dll"],
+    "date": "2026-05-07",
+    "url": "https://github.com/DinoMax0n/WinClang/releases/download/22.1.5/LLVM22.1.5.zip",
+    "sha": "5895db0af32077f92afd6ac2ad03610920569f396fd5851b728434812f84ec93"
+  }, 
+  {
+    "version": "22.1.4",
+    "components": ["clang", "lld", "clang-extra-tools", "lldb", "libc++", "compiler-rt", "libunwind", "ASan", "UbSan", "python.dll"],
+    "date": "2026-04-24",
+    "url": "https://github.com/DinoMax0n/WinClang/releases/download/22.1.4/LLVM22.1.4.zip",
+    "sha": "A1CCB86AF511BFEBF1B3AF328A050F41D2164741CD19009EF88A599E18A2EDDD"
+  },  
+  {
+    "version": "22.1.3",
+    "components": ["clang", "lld", "clang-extra-tools", "lldb", "libc++", "compiler-rt", "libunwind", "ASan", "UbSan", "python.dll"],
+    "date": "2026-04-07",
+    "url": "https://github.com/DinoMax0n/WinClang/releases/download/22.1.3/LLVM22.1.3.zip",
+    "sha": "6529EFA8E813209237A673D82B5F59E4DC204861972EF56019B70FB1FACA1C24"
+  }, 
+  {
+    "version": "22.1.2",
+    "components": ["clang", "lld", "clang-extra-tools", "lldb", "libc++", "compiler-rt", "libunwind", "ASan", "UbSan", "python.dll"],
+    "date": "2026-03-31",
+    "url": "https://github.com/DinoMax0n/WinClang/releases/download/22.1.2/LLVM22.1.2.zip",
+    "sha": "FAF1784DB0AE5B4B43DA1DACF2BC482C8B75807E528F7B8D8A402C1FAE501499"
+  },
+  {
+    "version": "22.1.1",
+    "components": ["clang", "lld", "clang-extra-tools", "lldb", "libc++", "compiler-rt", "libunwind", "ASan", "UbSan", "python.dll"],
+    "date": "2026-03-12",
+    "url": "https://github.com/DinoMax0n/WinClang/releases/download/22.1.1/LLVM22.1.1.zip",
+    "sha": "9857D5B0A46FC2C25A1F469979E77668C97CB3639863A387DF3DD08C6AA59C30"
+  },
+  {
+    "version": "22.1.0",
+    "components": ["clang", "lld", "clang-extra-tools", "lldb", "libc++", "compiler-rt", "libunwind"],
+    "date": "2026-03-02",
+    "url": "https://github.com/DinoMax0n/WinClang/releases/download/22.1.0/LLVM22.1.0.zip",
+    "sha": "FC6359BC9E1E219C056F5682936887252ADD80469C720B3E16BC863BF1661212"
+  },
+  {
+    "version": "21.1.8",
+    "components": ["clang", "lld", "clang-extra-tools", "lldb", "libc++", "compiler-rt", "libunwind"],
+    "date": "2025-12-21",
+    "url": "https://github.com/DinoMax0n/WinClang/releases/download/21.1.8/LLVM21.1.8.zip",
+    "sha": "8A7E03EB08C54EE75DBBB03C1C12FCB8FAF8DBCA6ED48BB683A263DA16D54343"
+  }
+]
