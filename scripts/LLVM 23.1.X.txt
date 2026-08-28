@@ -19,7 +19,7 @@ Python (I recommend 3.14)
 
 EXECUTE THE COMMANDS EXACTLY IN THE SEQUENCE IN WHICH THEY ARE WRITTEN!
 
-(Tested 22.1.0,22.1.1,22.1.2,22.1.3,22.1.4,22.1.5,22.1.6,22.1.8)
+(Tested 23.1.0)
 
 RUN THE FOLLOWING COMMANDS IN PowerShell ONLY(or change the installation prefix)
 
@@ -63,19 +63,19 @@ cmake -G Ninja .. `
   -DLIBXML2_WITH_PROGRAMS=OFF `
   -DBUILD_SHARED_LIBS=OFF
   
-  Download LLVM version 22.1.X https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.5/llvm-project-22.1.5.src.tar.xz 
+  Download LLVM version 23.1.0 https://github.com/llvm/llvm-project/releases/download/llvmorg-23.1.0/llvm-project-23.1.0.src.tar.xz 
   
   cd <LLVM SOURCE>
   
 (New, with ASan,UBSan)
-cmake -G Ninja ../../runtimes `
+сmake -G Ninja ../runtimes `
   -DCMAKE_BUILD_TYPE=Release `
   -DCMAKE_INSTALL_PREFIX="C:/PROGRA~2/LLVM" `
   -DCMAKE_C_COMPILER="clang.exe" `
   -DCMAKE_CXX_COMPILER="clang++.exe" `
   -DCMAKE_ASM_COMPILER="clang.exe" `
-  -DCMAKE_C_FLAGS="-target x86_64-w64-windows-gnu -rtlib=compiler-rt" `
-  -DCMAKE_CXX_FLAGS="-target x86_64-w64-windows-gnu -rtlib=compiler-rt -D_LIBCPP_HAS_MSVCRT=1 -DLIBCXX_HAS_WIN32_THREAD_API=1" `
+  -DCMAKE_C_FLAGS="-target x86_64-w64-windows-gnu -rtlib=compiler-rt -lunwind" `
+  -DCMAKE_CXX_FLAGS="-target x86_64-w64-windows-gnu -rtlib=compiler-rt -D_LIBCPP_HAS_MSVCRT=1 -DLIBCXX_HAS_WIN32_THREAD_API=1 -lunwind" `
   -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind;compiler-rt" `
   -DCMAKE_C_COMPILER_TARGET=x86_64-w64-windows-gnu `
   -DCMAKE_CXX_COMPILER_TARGET=x86_64-w64-windows-gnu `
@@ -99,44 +99,12 @@ cmake -G Ninja ../../runtimes `
   -DCOMPILER_RT_BUILD_MEMPROF=OFF `
   -DCOMPILER_RT_BUILD_CTX_PROFILE=OFF `
   -DCOMPILER_RT_BUILD_ORC=OFF `
-  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=OFF `
+  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON `
   -DLLVM_INCLUDE_TESTS=OFF `
   -DLIBCXX_ENABLE_ASSERTIONS=OFF
-  
-(Old, whith out ASan,UBSan)  
-cmake -G Ninja ../../runtimes `
-  -DCMAKE_BUILD_TYPE=Release `
-  -DCMAKE_INSTALL_PREFIX="C:/PROGRA~2/LLVM" `
-  -DCMAKE_C_COMPILER="clang.exe" `
-  -DCMAKE_CXX_COMPILER="clang++.exe" `
-  -DCMAKE_ASM_COMPILER="clang.exe" `
-  -DCMAKE_C_FLAGS="-target x86_64-w64-windows-gnu" `
-  -DCMAKE_CXX_FLAGS="-target x86_64-w64-windows-gnu -D_LIBCPP_HAS_MSVCRT=1 -DLIBCXX_HAS_WIN32_THREAD_API=1" `
-  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind;compiler-rt" `
-  -DCMAKE_C_COMPILER_TARGET=x86_64-w64-windows-gnu `
-  -DCMAKE_CXX_COMPILER_TARGET=x86_64-w64-windows-gnu `
-  -DCMAKE_ASM_COMPILER_TARGET=x86_64-w64-windows-gnu `
-  -DLIBCXX_ENABLE_STATIC=ON `
-  -DLIBCXX_ENABLE_SHARED=OFF `
-  -DLIBCXX_HERMETIC_STATIC_LIBRARY=ON `
-  -DLIBCXX_STATICALLY_LINK_ABI_INTO_LIBCXX=ON `
-  -DLIBCXX_HAS_WIN32_THREAD_API=ON `
-  -DLIBCXX_HAS_PTHREAD_API=OFF `
-  -DLIBCXX_ENABLE_MONOTONIC_CLOCK=ON `
-  -DLIBCXX_ENABLE_FILESYSTEM=ON `
-  -DLIBCXX_USE_WIN32_FILESYSTEM=ON `
-  -DLIBCXXABI_ENABLE_STATIC=ON `
-  -DLIBCXXABI_ENABLE_SHARED=OFF `
-  -DLIBCXXABI_USE_LLVM_UNWINDER=ON `
-  -DLIBUNWIND_ENABLE_STATIC=ON `
-  -DLIBUNWIND_ENABLE_SHARED=OFF `
-  -DLIBUNWIND_USE_COMPILER_RT=ON `
-  -DCOMPILER_RT_BUILD_BUILTINS=ON `
-  -DCOMPILER_RT_BUILD_SANITIZERS=OFF `
-  -DLLVM_INCLUDE_TESTS=OFF `
-  -DLIBCXX_ENABLE_ASSERTIONS=OFF
+
 (Python,swig must be in PATH, or change path to .exe)
-cmake -G Ninja ../../llvm `
+cmake -G Ninja ../llvm `
   -DCMAKE_BUILD_TYPE=Release `
   -DCMAKE_INSTALL_PREFIX="C:/PROGRA~2/LLVM" `
   -DCMAKE_C_COMPILER="clang" `
@@ -199,12 +167,12 @@ make
 	
 make install DESTDIR="/c/PROGRA~2/LLVM/x86_64-w64-mingw32"
 
-mkdir C:/PROGRA~2/LLVM/lib/clang/22/lib/x86_64-w64-windows-gnu
+mkdir C:/PROGRA~2/LLVM/lib/clang/23/lib/x86_64-w64-windows-gnu
 
-cp -r C:/PROGRA~2/LLVM/lib/windows/*  C:/PROGRA~2/LLVM/lib/clang/22/lib/x86_64-w64-windows-gnu/
+cp -r C:/PROGRA~2/LLVM/lib/windows/*  C:/PROGRA~2/LLVM/lib/clang/23/lib/x86_64-w64-windows-gnu/
 
 cp "C:/PROGRA~2/LLVM/lib/windows/libclang_rt.asan_dynamic-x86_64.dll" "C:/PROGRA~2/LLVM/bin"
 
 The command is dangerous because you have to write the path manually (to avoid accidentally running the command in the wrong place and breaking something)
 
-Get-ChildItem -Path "PrefixInstallLLVM\lib\clang\22\lib\x86_64-w64-windows-gnu" -Filter "*-x86_64*" | Rename-Item -NewName { $_.Name -replace '-x86_64', '' }
+Get-ChildItem -Path "PrefixInstallLLVM\lib\clang\23\lib\x86_64-w64-windows-gnu" -Filter "*-x86_64*" | Rename-Item -NewName { $_.Name -replace '-x86_64', '' }
