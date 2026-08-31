@@ -1,4 +1,11 @@
 [
+     {
+    "version": "23.1.0",
+    "components": ["clang", "lld", "clang-extra-tools", "lldb", "libc++", "compiler-rt", "libunwind", "ASan", "UbSan", "python.dll"],
+    "date": "2026-08-31",
+    "url": "https://github.com/DinoMax0n/WinClang/releases/download/23.1.0/LLVM23.1.0.zip",
+    "sha": "94139e71f106e26c8d39b740ec75d5a1796fec5f948a61f880920d66ed6f0e56"
+   }, 
    {
     "version": "22.1.8",
     "components": ["clang", "lld", "clang-extra-tools", "lldb", "libc++", "compiler-rt", "libunwind", "ASan", "UbSan", "python.dll"],
